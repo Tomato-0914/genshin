@@ -1,0 +1,42 @@
+# 【#抽卡记录】【#全部抽卡记录】欧皇度设置
+# 如需修改，请复制本文件到 plugins/genshin/config/gacha.luck.yaml 再修改，重启后不会被更新覆盖
+# 注意：修改 model 或 levels 时需填写完整内容（按顶层字段整体覆盖）
+#
+# 计算方式：按出金概率模型，计算与你获得同样数量UP（或五星）的玩家中，
+# 花费抽数比你多的玩家占比，即“运气超过了多少玩家”，再按 levels 评级
+# 角色池按UP评级；武器/光锥/集录/常驻池无法判断UP，按出金速度评级
+
+# 是否显示欧皇度 true-显示 false-不显示
+enable: true
+
+# 出金概率模型（官方公示基础概率 + 社区统计的软保底），一般无需修改
+# base：基础概率；soft：从第几抽开始概率提升；step：之后每抽提升的概率；hard：硬保底抽数
+# upRate：小保底不歪的概率，仅角色池需要
+# 按此模型：角色池单个五星期望约62.3抽，82抽内出金概率约98%
+model:
+  gs:
+    301: { base: 0.006, soft: 74, step: 0.06, hard: 90, upRate: 0.55 } # 角色池：捕获明光后小保底约55%不歪
+    302: { base: 0.007, soft: 63, step: 0.07, hard: 80 } # 武器池
+    500: { base: 0.006, soft: 74, step: 0.06, hard: 90 } # 集录池
+    200: { base: 0.006, soft: 74, step: 0.06, hard: 90 } # 常驻池
+  sr:
+    11: { base: 0.006, soft: 74, step: 0.06, hard: 90, upRate: 0.5 } # 角色池
+    21: { base: 0.006, soft: 74, step: 0.06, hard: 90, upRate: 0.5 } # 角色联动池
+    12: { base: 0.008, soft: 66, step: 0.07, hard: 80 } # 光锥池
+    22: { base: 0.008, soft: 66, step: 0.07, hard: 80 } # 光锥联动池
+    1: { base: 0.006, soft: 74, step: 0.06, hard: 90 } # 常驻池
+
+# 评级：运气超过的玩家比例(%) >= min 时命中，从上到下依次判断
+levels:
+  - { min: 99, title: 天运所归, color: "#e8590c" }
+  - { min: 95, title: 终极欧皇, color: "#f76707" }
+  - { min: 85, title: 大欧皇, color: "#f59f00" }
+  - { min: 70, title: 小欧皇, color: "#d4a72c" }
+  - { min: 55, title: 小有运气, color: "#74b816" }
+  - { min: 45, title: 平民, color: "#4c9bd6" }
+  - { min: 25, title: 小非酋, color: "#7048e8" }
+  - { min: 8, title: 大非酋, color: "#9c36b5" }
+  - { min: 0, title: 终极非酋, color: "#a61e4d" }
+
+# 有效样本（UP数 / 五星数）少于该值时提示“样本较少”
+minSample: 3
