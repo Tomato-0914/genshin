@@ -7,6 +7,20 @@ import gsCfg from "./gsCfg.js"
 import GachaLuck from "./gachaLuck.js"
 import { Character, Weapon } from "#miao.models"
 
+/** 原神武器池常驻五星武器 */
+const stdWeapon = [
+  "天空之刃",
+  "天空之傲",
+  "天空之脊",
+  "天空之卷",
+  "天空之翼",
+  "风鹰剑",
+  "狼的末路",
+  "和璞鸢",
+  "四风原典",
+  "阿莫斯之弓",
+]
+
 export default class GachaLog extends base {
   constructor(e) {
     super(e)
@@ -735,9 +749,6 @@ export default class GachaLog extends base {
       isvalidNum = Math.round(upUsed / (fiveNum - wai))
     }
 
-    // 小保底：上一个五星不是常驻（未歪）的五星
-    let smallLog = fiveLog.filter(item => !item.minimum)
-
     let upYs = isvalidNum * 160
     if (upYs >= 10000) {
       upYs = (upYs / 10000).toFixed(2) + "w"
@@ -772,12 +783,34 @@ export default class GachaLog extends base {
       fiveLog,
       upYs,
       noWaiRate,
-      upNum: fiveNum - wai,
-      upUsed,
-      fiveUsed: allNum - noFiveNum,
-      smallNum: smallLog.length,
-      smallWin: smallLog.filter(item => item.isUp).length,
+      ...this.getLuckInput(fiveLog, allNum - noFiveNum),
     }
+  }
+
+  /** 欧皇度所需数据：角色按是否歪判断UP，原神武器池按是否常驻武器判断UP */
+  getLuckInput(fiveLog, fiveUsed) {
+    const isUp = item => {
+      if (item.item_type == "角色") return item.isUp
+      return this.type == 302 && !stdWeapon.includes(item.name)
+    }
+    let upNum = 0
+    let smallNum = 0
+    let smallWin = 0
+    let isGuarantee = false
+    // fiveLog 为倒序，按时间正序遍历：歪了之后的下一个五星为大保底
+    for (let i = fiveLog.length - 1; i >= 0; i--) {
+      const up = isUp(fiveLog[i])
+      if (up) upNum++
+      if (!isGuarantee) {
+        smallNum++
+        if (up) smallWin++
+      }
+      isGuarantee = !up
+    }
+    // 最近一个五星歪了的话，这部分抽数还没换到UP，不计入
+    let upUsed = fiveUsed
+    if (fiveLog.length > 0 && !isUp(fiveLog[0])) upUsed -= fiveLog[0].num
+    return { upNum, upUsed: upNum > 0 ? upUsed : 0, fiveUsed, smallNum, smallWin }
   }
 
   checkIsUp() {
