@@ -397,3 +397,55 @@ body {
   background: #9d3333;
   color: #fff;
 }
+
+.luck_line {
+  display: flex;
+  align-items: center;
+  margin: 0 10px 12px 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: #f7f3ea;
+  border-left: 5px solid var(--luck-color, #d4b98c);
+}
+
+.luck_line .luck_title {
+  flex-shrink: 0;
+  min-width: 96px;
+  margin-right: 12px;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  color: var(--luck-color, #d4b98c);
+}
+
+.luck_line .luck_info {
+  flex: 1;
+  min-width: 0;
+}
+
+.luck_line .luck_main {
+  font-size: 15px;
+  color: #333;
+}
+
+.luck_line .luck_main b {
+  font-family: tttgbnumber;
+  font-size: 18px;
+  color: var(--luck-color, #d4b98c);
+}
+
+.luck_line .luck_sub {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 17px;
+  color: #7f858a;
+}
+
+.luck_line .luck_tip {
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #fff;
+  background: #c5b48f;
+}

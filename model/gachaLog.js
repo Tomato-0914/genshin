@@ -4,6 +4,7 @@ import lodash from "lodash"
 import fs from "node:fs"
 import common from "../../../lib/common/common.js"
 import gsCfg from "./gsCfg.js"
+import GachaLuck from "./gachaLuck.js"
 import { Character, Weapon } from "#miao.models"
 
 export default class GachaLog extends base {
@@ -723,14 +724,19 @@ export default class GachaLog extends base {
     }
     // 有效抽卡
     let isvalidNum = 0
+    let upUsed = 0
 
     if (fiveNum > 0 && fiveNum > wai) {
       if (fiveLog.length > 0 && !fiveLog[0].isUp) {
-        isvalidNum = Math.round((allNum - noFiveNum - fiveLog[0].num) / (fiveNum - wai))
+        upUsed = allNum - noFiveNum - fiveLog[0].num
       } else {
-        isvalidNum = Math.round((allNum - noFiveNum) / (fiveNum - wai))
+        upUsed = allNum - noFiveNum
       }
+      isvalidNum = Math.round(upUsed / (fiveNum - wai))
     }
+
+    // 小保底：上一个五星不是常驻（未歪）的五星
+    let smallLog = fiveLog.filter(item => !item.minimum)
 
     let upYs = isvalidNum * 160
     if (upYs >= 10000) {
@@ -766,6 +772,11 @@ export default class GachaLog extends base {
       fiveLog,
       upYs,
       noWaiRate,
+      upNum: fiveNum - wai,
+      upUsed,
+      fiveUsed: allNum - noFiveNum,
+      smallNum: smallLog.length,
+      smallWin: smallLog.filter(item => item.isUp).length,
     }
   }
 
@@ -1021,6 +1032,16 @@ export default class GachaLog extends base {
       ]
     }
     let hasMore = false
+    const luck = GachaLuck.get({
+      game: this.e.isSr ? "sr" : "gs",
+      type,
+      upNum: data.upNum,
+      upUsed: data.upUsed,
+      fiveNum: data.fiveNum,
+      fiveUsed: data.fiveUsed,
+      smallNum: data.smallNum,
+      smallWin: data.smallWin,
+    })
     // if (this.e.isGroup && data.fiveLog.length > 48) {
     //   data.fiveLog = data.fiveLog.slice(0, 48)
     //   hasMore = true
@@ -1037,6 +1058,7 @@ export default class GachaLog extends base {
       lastTime: data.lastTime,
       fiveLog: data.fiveLog,
       line,
+      luck,
       hasMore,
       max,
     }

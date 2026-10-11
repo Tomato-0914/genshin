@@ -39,6 +39,23 @@
       {{/each}}
     </div>
     {{/each}}
+    {{if log.luck}}
+    <div class="luck_line" style="--luck-color:{{log.luck.color}}">
+      <span class="luck_title">{{log.luck.title}}</span>
+      <div class="luck_info">
+        <div class="luck_main">
+          运气超过 <b>{{log.luck.percent}}%</b> 的{{game === 'sr' ? '开拓者' : '旅行者'}}
+          {{if log.luck.fewSample}}<span class="luck_tip">样本较少</span>{{/if}}
+        </div>
+        {{if log.luck.isUpPool}}
+        <div class="luck_sub">UP平均 {{log.luck.upAvg}} 抽 · 期望 {{log.luck.upExpect}} 抽（含歪）</div>
+        <div class="luck_sub">出金速度超过 {{log.luck.fivePercent}}%{{if log.luck.winPercent !== false}} · 小保底不歪超过 {{log.luck.winPercent}}%{{/if}}</div>
+        {{else}}
+        <div class="luck_sub">平均出金 {{log.luck.fiveAvg}} 抽 · 期望 {{log.luck.fiveExpect}} 抽</div>
+        {{/if}}
+      </div>
+    </div>
+    {{/if}}
     <div class="line_box">
       <span class="line"></span>
       <span class="text">五星历史 {{firstTime}} ~ {{lastTime}}</span>
