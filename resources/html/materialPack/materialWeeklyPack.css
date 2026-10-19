@@ -1,9 +1,10 @@
+/* 周本图较窄，放大倍率比全量图高一些，保证输出清晰度 */
 body {
-  transform: none !important;
+  transform: scale(2);
 }
 
 .container {
-  width: 570px !important;
+  width: 520px !important;
 }
 
 /*.head_box {*/
@@ -36,7 +37,7 @@ body {
 /*}*/
 
 .material {
-  width: 120px;
+  width: 100px;
   background-color: rgb(221, 200, 173);
 }
 
@@ -50,7 +51,7 @@ body {
 }
 
 .material img {
-  width: 120px;
+  width: 100px;
   height: 100px;
 }
 
@@ -63,10 +64,11 @@ body {
 
 .weekly-item {
   display: flex;
+  justify-content: center;
 }
 
 .material .label-name {
-  width: 120px;
+  width: 100px;
   color: #333333;
   font-size: 12px;
   padding: 2px 2px 5px;
@@ -78,10 +80,10 @@ body {
 }
 
 .material .label-icon {
-  top: 22px;
-  left: 32px;
-  width: 56px;
-  height: 56px;
+  top: 17px;
+  left: 17px;
+  width: 66px;
+  height: 66px;
   background-size: contain;
   background-position: center;
 }
@@ -94,8 +96,10 @@ body {
 
 /* 周本Boss：去掉卡片底色，圆形头像，与材料区分 */
 .material.boss {
+  width: 120px;
   background: none;
 }
+
 
 .material.boss img {
   visibility: hidden;
@@ -113,6 +117,7 @@ body {
 }
 
 .material.boss .label-name {
+  width: 120px;
   color: #6b5a43;
   font-weight: bold;
 }
