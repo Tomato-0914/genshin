@@ -41,6 +41,16 @@
     text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000 !important;
   }
   
+  /* 图标铺满整张卡片，去掉卡片底色、四角统一圆角，避免右下角露出底色像是出框 */
+  .material {
+    background: none;
+    border-radius: 8px;
+  }
+
+  .material img.item-icon {
+    border-radius: 8px;
+  }
+
   /* 屏蔽喵喵原生喜欢捣乱的小角标 */
   .label-icon { display: none !important; }
 </style>
