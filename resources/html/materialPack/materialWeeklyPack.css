@@ -79,12 +79,6 @@ body {
 }
 
 
-.material span::before {
-  width: 120px;
-  bottom: 20px;
-  background-color: rgba(0, 0, 0, 0.2)
-}
-
 .material .label-icon {
   top: 20px;
   left: 20px;

@@ -153,16 +153,6 @@ body {
   font-size: 12px
 }
 
-.material span::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 15px;
-  width: 80px;
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.443)
-}
-
 .material .num {
   font-size: 13px
 }

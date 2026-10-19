@@ -2,7 +2,6 @@ import base from "./base.js"
 import MysInfo from "./mys/mysInfo.js"
 import gsCfg from "./gsCfg.js"
 import lodash from "lodash"
-import { Character, Weapon } from "#miao.models"
 
 export default class RoleBag extends base {
   constructor(e) {
@@ -15,35 +14,23 @@ export default class RoleBag extends base {
     return await roleBag.getData()
   }
 
-  /** #角色背包 */
-  async getData() {
-    let res = await MysInfo.get(this.e, { index: "", character: "" })
+  /** #武器 */
+  async getData(e) {
+    let res = await MysInfo.get(this.e, "character")
 
-    if (!res || res[0]?.retcode !== 0 || res[1]?.retcode !== 0) return false
+    if (!res || res.retcode !== 0) return false
 
-    let [resIndex, resChar] = res
-    let avatars = resChar.data.avatars || []
+    let avatars = res.data.avatars
 
     if (avatars.length <= 0) {
-      this.e.reply("暂无角色数据")
-      return false
+      return true
     }
-
-    let role = resIndex.data.role || {}
 
     /** 截图数据 */
     let data = {
       ...this.screenData,
       saveId: this.e.uid,
       uid: this.e.uid,
-      role: {
-        nickname: role.nickname || this.e.sender?.card || this.e.sender?.nickname || "旅行者",
-        level: role.level || "??",
-        region: role.region_name || role.region || "",
-        avatar: role.game_head_icon || role.AvatarUrl || "",
-      },
-      pluginName: "genshin",
-      pluginVersion: false,
       ...this.dealData(avatars),
     }
 
@@ -62,22 +49,21 @@ export default class RoleBag extends base {
     }
 
     let costumes = gsCfg.getdefSet("role", "other").costumes
+    let sortName = gsCfg.getdefSet("role", "other").sortName
 
     let list = []
-    let count = { 5: 0, 4: 0 }
 
     for (let val of avatars) {
-      let rarity = val.rarity > 5 ? 5 : val.rarity
-      count[rarity] = (count[rarity] || 0) + 1
+      let rarity = val.rarity
+      if (val.rarity > 5) {
+        rarity = 5
+      }
 
       if (type != "all" && rarity != type) {
         continue
       }
 
-      let char = Character.get(val.id)
-      if (!char) continue
-
-      let sort =
+      val.sort =
         rarity * 100000 +
         val.actived_constellation_num * 10000 +
         val.level * 100 +
@@ -85,56 +71,39 @@ export default class RoleBag extends base {
 
       // 增加神里排序
       if (val.id == 10000002) {
-        sort += 50
+        val.sort += 50
       }
 
       if (val.rarity > 5) {
-        sort = sort - (val.id - 10000000)
+        val.sort = val.sort - (val.id - 10000000)
+      }
+      val.sortLevel = val.level
+
+      val.weapon.showName = sortName[val.weapon.name] ?? val.weapon.name
+
+      val.name = gsCfg.roleIdToName(val.id)
+
+      if (val.id == 10000005 || val.id == 10000007) {
+        val.sort = 0
       }
 
-      // 旅行者放最后
-      if (char.isTraveler) {
-        sort = 0
-      }
-
-      let weapon = Weapon.get(val.weapon?.name)
-
-      let costume = false
+      val.costumesLogo = ""
       if (val.costumes && val.costumes.length >= 1) {
-        costume = val.costumes.some(v => costumes.includes(v.name))
+        for (let v of val.costumes) {
+          if (costumes.includes(v.name)) {
+            val.costumesLogo = 2
+            break
+          }
+        }
       }
 
-      list.push({
-        name: char.name,
-        abbr: char.abbr,
-        face: char.face,
-        elem: char.elem,
-        rarity,
-        level: val.level,
-        cons: val.actived_constellation_num,
-        fetter: val.fetter,
-        costume,
-        weapon: {
-          name: val.weapon?.name,
-          icon: weapon?.icon || "",
-          rarity: val.weapon?.rarity || 1,
-          level: val.weapon?.level,
-          affix: val.weapon?.affix_level || 1,
-        },
-        sort,
-      })
+      list.push(val)
     }
 
-    list = lodash.orderBy(list, ["sort", "level"], ["desc", "desc"])
+    list = lodash.chain(list).orderBy(["sortLevel"], ["desc"]).orderBy(["sort"], ["desc"]).value()
 
-    let sections = []
-    for (let star of [5, 4]) {
-      let ds = list.filter(v => v.rarity == star)
-      if (ds.length > 0) {
-        sections.push({ title: `${star == 5 ? "五" : "四"}星角色`, star, list: ds })
-      }
-    }
+    let num = list.length
 
-    return { sections, num: list.length, count, total: avatars.length }
+    return { list, num }
   }
 }

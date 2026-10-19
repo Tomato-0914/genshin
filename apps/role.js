@@ -4,7 +4,6 @@ import gsCfg from "../model/gsCfg.js"
 import RoleIndex from "../model/roleIndex.js"
 import Abyss from "../model/abyss.js"
 import Weapon from "../model/weapon.js"
-import RoleBag from "../model/roleBag.js"
 
 export class role extends plugin {
   constructor() {
@@ -29,10 +28,6 @@ export class role extends plugin {
         {
           reg: "^#[五星|四星|5星|4星]*武器[ |0-9]*$",
           fnc: "weapon",
-        },
-        {
-          reg: "^#((五星|四星|5星|4星)(角色)?(背包)?|角色背包)$",
-          fnc: "roleBag",
         },
         {
           reg: "^#(宝箱|成就|尘歌壶|家园|探索|探险|声望|探险度|探索度)[ |0-9]*$",
@@ -129,17 +124,6 @@ export class role extends plugin {
 
     this.reply([
       await this.renderImg("genshin", "html/avatar/weapon", data, { retType: "base64" }),
-      this.button,
-    ])
-  }
-
-  /** 角色背包 */
-  async roleBag() {
-    let data = await RoleBag.get(this.e)
-    if (!data) return
-
-    this.reply([
-      await this.renderImg("genshin", "html/roleBag/roleBag", data, { retType: "base64" }),
       this.button,
     ])
   }
