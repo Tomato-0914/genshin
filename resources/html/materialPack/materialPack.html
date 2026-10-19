@@ -1,0 +1,104 @@
+{{extend defaultLayout}}
+
+{{block 'css'}}
+<link rel="stylesheet" type="text/css" href="{{pluResPath}}html/materialPack/materialPack.css" />
+<style>
+  .real-icon { 
+    position: absolute !important;
+    top: 4px !important; 
+    left: 4px !important;
+    width: calc(100% - 8px) !important; 
+    height: 70% !important; /* 高度只占上半截，绝不越界压线！ */
+    background-size: contain !important; 
+    background-position: center bottom !important; 
+    background-repeat: no-repeat !important; 
+    z-index: 5;
+  }
+  
+  .material span { 
+    position: absolute !important; 
+    bottom: 15px !important; 
+    width: 100%; left: 0; 
+    text-align: center;
+    white-space: normal !important; 
+    font-size: 11px !important; 
+    line-height: 1.1 !important; 
+    z-index: 10;
+    color: #ffffff !important;
+    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000 !important;
+  }
+  
+  /* 数量排版：加粗的白字黑边 */
+  .material .num {
+    position: absolute !important; 
+    bottom: 1px !important;
+    width: 100%; left: 0; 
+    text-align: center;
+    z-index: 10;
+    font-weight: bold;
+    color: #ffffff !important;
+    text-shadow: 1px 1px 2px #000, -1px -1px 2px #000, 1px -1px 2px #000, -1px 1px 2px #000 !important;
+  }
+  
+  /* 屏蔽喵喵原生喜欢捣乱的小角标 */
+  .label-icon { display: none !important; }
+</style>
+{{/block}}
+
+{{block 'main'}}
+<div class="data_box_repeat"></div>
+<div class="head_box">
+  <img class="role_img" src='{{role.game_head_icon || role.AvatarUrl}}'>
+  <div class="role_name">{{role.nickname}}<span>Lv.{{role.level}}</span></div>
+  <div class="role_uid">UID: {{uid}}<br>{{role.region}}</div>
+  <div class="logo"></div>
+</div>
+
+{{ set typeMapGs = { 
+    weekly:'周本掉落', talent:'角色天赋素材', weapon:'武器突破素材', boss:'角色培养素材',gem:'角色突破素材',
+    specialty:'区域特产', monster:'精英敌人掉落', normal:'普通敌人掉落',
+    ore:'锻造用矿石', wood:'木材', adventureItem:'冒险道具',other:'其他' 
+} }}
+
+{{ set typeMapSr = { 
+    talent: '高阶行迹材料',
+    material: '行迹材料 光锥晋阶材料',
+    normal: '行迹材料 角色晋阶材料',
+    char: '角色晋阶材料',
+    exp: '基础材料',
+    other: '其他'
+} }}
+
+{{ set typeMapZzz = { 
+    char: '代理人升级&晋升',
+    talent: '代理人技能升级',
+    weapon: '音擎强化&进阶',
+    exp: '基础材料',
+    other: '其他'
+} }}
+
+{{ set typeMap = isZzz ? typeMapZzz : (isSr ? typeMapSr : typeMapGs) }}
+
+<div class="info_box">
+  {{each materials material type}}
+  {{if type !== 'length'}}
+  <div class="role_separate_line">{{typeMap[type] || '未知材料'}}</div>
+  <div class="type_box">
+    {{each material val}}
+    <div class="material">
+      {{ set iconPath = pluResPath + '../../miao-plugin/resources/meta-gs/material/' + type + '/' + val.name + '.webp' }}
+      {{ set useLocalIcon = !isSr && !isZzz && ['weekly', 'talent', 'weapon', 'boss', 'gem', 'monster', 'normal'].includes(type) && val.name !== '智识之冕' }}
+      
+      <img class="item-icon star{{val.level || (isSr ? 4 : 1)}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
+      
+      <div class="real-icon" style="background-image:url({{if useLocalIcon}}{{iconPath}}{{else}}{{val.icon}}{{/if}})"></div>
+
+      <span>{{val.name}}</span>
+      <div class="num">{{val.num}}</div>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+  {{/each}}
+</div>
+{{/block}}
