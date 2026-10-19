@@ -90,11 +90,12 @@ export class materialPack extends plugin {
       tplFile:
         "./plugins/genshin/resources/html/materialPack/materialPack.html",
       pluResPath: `${this._path}/plugins/genshin/resources/`,
+      // 图标都是 <img>，等 load 事件即可保证图标加载完再截图
+      // 超时与 networkidle2 和框架默认值一致，避免 Miao-Yunzai 合并参数时影响其他插件
       pageGotoParams: {
-        timeout: 60000,
-        waitUntil: "domcontentloaded",
+        timeout: 120000,
+        waitUntil: ["load", "networkidle2"],
       },
-      waitForImages: isAll ? 15000 : 5000,
     });
     if (img) await this.reply(img);
   }
@@ -584,7 +585,6 @@ export class materialPack extends plugin {
       ...data,
       tplFile: `./plugins/genshin/resources/html/materialPack/materialWeeklyPack.html`,
       pluResPath: `${this._path}/plugins/genshin/resources/`,
-      waitForImages: 5000,
     });
     if (img) await this.reply(img);
   }
