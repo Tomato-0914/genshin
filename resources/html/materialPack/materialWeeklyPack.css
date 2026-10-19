@@ -7,6 +7,11 @@ body {
   width: 520px !important;
 }
 
+/* 容器宽 520，边框宽度按 520 × 36 / 577 */
+.data_box_repeat {
+  --frame: 32px;
+}
+
 /*.head_box {*/
 /*  font-size: 14px;*/
 /*  gap: 0 0;*/

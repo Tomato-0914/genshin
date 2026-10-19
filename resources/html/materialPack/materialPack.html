@@ -3,15 +3,16 @@
 {{block 'css'}}
 <link rel="stylesheet" type="text/css" href="{{pluResPath}}html/materialPack/materialPack.css" />
 <style>
-  .real-icon { 
+  .material img.real-icon {
     position: absolute !important;
-    top: 4px !important; 
+    top: 4px !important;
     left: 4px !important;
-    width: calc(100% - 8px) !important; 
+    width: calc(100% - 8px) !important;
     height: 70% !important; /* 高度只占上半截，绝不越界压线！ */
-    background-size: contain !important; 
-    background-position: center bottom !important; 
-    background-repeat: no-repeat !important; 
+    object-fit: contain;
+    object-position: center bottom;
+    background: none;
+    border-radius: 0;
     z-index: 5;
   }
   
@@ -87,11 +88,15 @@
     {{each material val}}
     <div class="material">
       {{ set iconPath = pluResPath + '../../miao-plugin/resources/meta-gs/material/' + type + '/' + val.name + '.webp' }}
-      {{ set useLocalIcon = !isSr && !isZzz && ['weekly', 'talent', 'weapon', 'boss', 'gem', 'monster', 'normal'].includes(type) && val.name !== '智识之冕' }}
-      
+      {{ set useLocalIcon = !isSr && !isZzz && ['weekly', 'talent', 'weapon', 'boss', 'gem', 'monster', 'normal', 'specialty'].includes(type) && val.name !== '智识之冕' }}
+      {{ set mainIcon = useLocalIcon ? iconPath : (val.icon || '') }}
+      {{ set backIcon = useLocalIcon ? (val.icon || '') : '' }}
+
       <img class="item-icon star{{val.level || (isSr ? 4 : 1)}}" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />
-      
-      <div class="real-icon" style="background-image:url({{if useLocalIcon}}{{iconPath}}{{else}}{{val.icon}}{{/if}})"></div>
+
+      <!-- 本地图标优先，缺失时回退到米游社图标，都没有则隐藏 -->
+      <img class="real-icon" src="{{mainIcon}}" data-back="{{backIcon}}"
+        onerror="if(this.dataset.back){this.src=this.dataset.back;this.dataset.back=''}else{this.style.visibility='hidden'}" />
 
       <span>{{val.name}}</span>
       <div class="num">{{val.num}}</div>

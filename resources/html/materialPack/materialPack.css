@@ -60,48 +60,41 @@ body {
   background-size: contain
 }
 
+/* 背景：边框平铺（不拉伸），中间用从原图取色的渐变，顶部保留原图光影并渐隐
+ * bg-frame.webp 由 bg.png 的四角 + 中段光照均匀的整数个花纹周期拼成，平铺无接缝
+ * --frame 为边框宽度，取 容器宽度 × 36 / 577（原图宽 577，边框切片 36），
+ * 这样边框与顶部原图缩放比例一致，接缝处对齐 */
 .data_box_repeat {
+  --frame: 53px;
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
   border-radius: 5px;
-  background-image: url('../../img/other/bg.png');
-  background-size: 100%;
-  background-repeat: no-repeat;
-  border: 1px solid #d9d3c7;
+  border: var(--frame) solid transparent;
+  border-image: url('../../img/other/bg-frame.webp') 36 round;
+  background: linear-gradient(to right, #c2cad3 0%, #c6ced8 1%, #d3dbe2 5%, #dde4eb 13%, #e0e6ed 32%, #dfe6ed 50%, #dde4eb 68%, #d9e0e8 82%, #d6dee5 92%, #ccd7e2 100%) padding-box;
   font-family: tttgbnumber;
-  z-index: 0;
-  overflow: hidden
-}
-
-.data_box_repeat::before,
-.data_box_repeat::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 100%
-}
-
-.data_box_repeat::before {
-  top: 200px;
-  height: 100%;
-  background-image: url('../../img/other/bg.png');
-  background-size: 100% 1000%;
-  background-position: bottom;
-  background-repeat: repeat-y;
   z-index: 0
 }
 
-.data_box_repeat::after {
+/* 不能给 .data_box_repeat 加 overflow: hidden，Chrome 下会和 border-image 冲突，边框上出现亮色色块；
+ * 这里通过背景定位裁掉原图自带的边框 */
+.data_box_repeat::before {
+  content: "";
+  position: absolute;
   top: 0;
-  height: 100%;
+  left: 0;
+  right: 0;
+  aspect-ratio: 577 / 960;
   background-image: url('../../img/other/bg.png');
-  background-size: 100%;
+  background-size: calc(100% + 2 * var(--frame)) auto;
+  background-position: calc(-1 * var(--frame)) calc(-1 * var(--frame));
   background-repeat: no-repeat;
-  -webkit-transform: scaleY(-1);
-  transform: scaleY(-1)
+  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 90%);
+  mask-image: linear-gradient(to bottom, #000 50%, transparent 90%);
+  z-index: -1
 }
 
 .type_box {
