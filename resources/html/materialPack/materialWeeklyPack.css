@@ -7,7 +7,7 @@ body {
   width: 520px !important;
 }
 
-/* 容器宽 520，边框宽度按 520 × 36 / 577 */
+/* 容器宽 520，边框宽度按 520 × 50 / 800 */
 .data_box_repeat {
   --frame: 32px;
 }

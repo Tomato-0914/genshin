@@ -60,10 +60,9 @@ body {
   background-size: contain
 }
 
-/* 背景：边框平铺（不拉伸），中间用从原图取色的渐变，顶部保留原图光影并渐隐
- * bg-frame.webp 由 bg.png 的四角 + 中段光照均匀的整数个花纹周期拼成，平铺无接缝
- * --frame 为边框宽度，取 容器宽度 × 36 / 577（原图宽 577，边框切片 36），
- * 这样边框与顶部原图缩放比例一致，接缝处对齐 */
+/* 背景：bg-frame.webp 由背景原图的四角、整数个花纹周期的边框和无缝纹理拼成，
+ * 用 border-image 平铺（不拉伸），图片多长都不会变形
+ * --frame 为边框宽度，按 容器宽度 × 50 / 800（原图宽 800，边框切片 50） */
 .data_box_repeat {
   --frame: 53px;
   width: 100%;
@@ -71,30 +70,10 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 5px;
   border: var(--frame) solid transparent;
-  border-image: url('../../img/other/bg-frame.webp') 36 round;
-  background: linear-gradient(to right, #c2cad3 0%, #c6ced8 1%, #d3dbe2 5%, #dde4eb 13%, #e0e6ed 32%, #dfe6ed 50%, #dde4eb 68%, #d9e0e8 82%, #d6dee5 92%, #ccd7e2 100%) padding-box;
+  border-image: url('../../img/other/bg-frame.webp') 50 fill round;
   font-family: tttgbnumber;
   z-index: 0
-}
-
-/* 不能给 .data_box_repeat 加 overflow: hidden，Chrome 下会和 border-image 冲突，边框上出现亮色色块；
- * 这里通过背景定位裁掉原图自带的边框 */
-.data_box_repeat::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  aspect-ratio: 577 / 960;
-  background-image: url('../../img/other/bg.png');
-  background-size: calc(100% + 2 * var(--frame)) auto;
-  background-position: calc(-1 * var(--frame)) calc(-1 * var(--frame));
-  background-repeat: no-repeat;
-  -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 90%);
-  mask-image: linear-gradient(to bottom, #000 50%, transparent 90%);
-  z-index: -1
 }
 
 .type_box {
