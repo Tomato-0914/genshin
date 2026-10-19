@@ -42,17 +42,16 @@ body {
 
 .material + .type-split {
   width: 2px;
-  height: 60px;
-  background-color: #d0d0d0;
+  height: 70px;
+  background-color: #c9b79c;
   margin-left: 10px;
-  position: relative;
-  top: 30px;
+  align-self: center;
   border-radius: 2px;
 }
 
 .material img {
   width: 120px;
-  height: 120px;
+  height: 100px;
 }
 
 .weekly-box {
@@ -78,15 +77,46 @@ body {
   text-align: center;
 }
 
-
 .material .label-icon {
-  top: 20px;
-  left: 20px;
-  background-size: 80px 80px;
+  top: 22px;
+  left: 32px;
+  width: 56px;
+  height: 56px;
+  background-size: contain;
+  background-position: center;
 }
 
 .material .num {
   color: #333333;
   font-size: 12px;
   padding: 2px 0;
+}
+
+/* 周本Boss：去掉卡片底色，圆形头像，与材料区分 */
+.material.boss {
+  background: none;
+}
+
+.material.boss img {
+  visibility: hidden;
+}
+
+.material.boss .label-icon {
+  top: 16px;
+  left: 28px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #b49872;
+  background-size: cover;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.material.boss .label-name {
+  color: #6b5a43;
+  font-weight: bold;
+}
+
+.material.boss .num {
+  color: #8f7c63;
 }
