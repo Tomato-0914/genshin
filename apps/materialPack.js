@@ -108,7 +108,7 @@ export class materialPack extends plugin {
     let ck = binding.ck;
 
     await this.e.reply(
-      `正在通过水社计算器和大地图接口拉取相应的米游材料背包数据，请稍等...`,
+      `正在获取UID：${uid} 背包数据，请稍等...`,
     );
 
     let raw;
