@@ -1,0 +1,98 @@
+body {
+  transform: none !important;
+}
+
+.container {
+  width: 570px !important;
+}
+
+/*.head_box {*/
+/*  font-size: 14px;*/
+/*  gap: 0 0;*/
+/*  grid-template-columns: 80px 395px 65px;*/
+/*  grid-template-rows: 40px 30px;*/
+/*}*/
+
+/*.logo {*/
+/*  background-image: url('../../img/other/原神.png');*/
+/*  margin-top: 0;*/
+/*}*/
+
+/*.role_name span {*/
+/*  margin-left: 6px;*/
+/*  font-size: 12px;*/
+/*  position: relative;*/
+/*  top: -2px;*/
+/*  padding: 4px 6px;*/
+/*}*/
+
+/*.role_img {*/
+/*  width: 50px;*/
+/*  height: 50px;*/
+/*}*/
+
+/*.role_uid {*/
+/*  font-size: 14px;*/
+/*}*/
+
+.material {
+  width: 120px;
+  background-color: rgb(221, 200, 173);
+}
+
+.material + .type-split {
+  width: 2px;
+  height: 60px;
+  background-color: #d0d0d0;
+  margin-left: 10px;
+  position: relative;
+  top: 30px;
+  border-radius: 2px;
+}
+
+.material img {
+  width: 120px;
+  height: 120px;
+}
+
+.weekly-box {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.weekly-item {
+  display: flex;
+}
+
+.material .label-name {
+  width: 120px;
+  color: #333333;
+  font-size: 12px;
+  padding: 2px 2px 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  text-align: center;
+}
+
+
+.material span::before {
+  width: 120px;
+  bottom: 20px;
+  background-color: rgba(0, 0, 0, 0.2)
+}
+
+.material .label-icon {
+  top: 20px;
+  left: 20px;
+  background-size: 80px 80px;
+}
+
+.material .num {
+  color: #333333;
+  font-size: 12px;
+  padding: 2px 0;
+}

@@ -1,0 +1,50 @@
+{{extend defaultLayout}}
+
+{{block 'css'}}
+<link rel="stylesheet" type="text/css" href="{{pluResPath}}html/materialPack/materialPack.css"/>
+<link rel="stylesheet" type="text/css" href="{{pluResPath}}html/materialPack/materialWeeklyPack.css"/>
+{{/block}}
+
+{{block 'main'}}
+<div class="data_box_repeat"></div>
+<div class="head_box">
+  <img class="role_img" src='{{role.game_head_icon || role.AvatarUrl}}' alt="角色头像">
+  <div class="role_name">{{role.nickname}}<span>Lv.{{role.level}}</span></div>
+  <div class="role_uid">UID: {{uid}}<br>{{role.region}}</div>
+  <div class="logo"></div>
+</div>
+
+<div class="info_box">
+  <div class="role_separate_line">周本材料</div>
+  {{set nameMap = { } }}
+  <div class="type_box weekly-box">
+    {{each weeklyList weekItem}}
+    <div class="weekly-item">
+      <!-- {{set bossIconPath = pluResPath + `html/materialPack/img/weeklyBoss/${weekItem[0]}.png` }} -->
+      {{set bossIconPath = weekItem[3] ? weekItem[3] : pluResPath + `html/materialPack/img/weeklyBoss/${weekItem[0]}.png` }}
+      <div class="material">
+        <img class="item-icon star5"/>
+        <!--suppress CssUnknownTarget -->
+        <div class="label-icon {{type}}" style="background-image: url({{bossIconPath}})"></div>
+
+        <span class="label-name">{{nameMap[weekItem[0]] || weekItem[0]}}</span>
+        <div class="num">总计: {{weekItem[1]}}</div>
+      </div>
+      <div class="type-split"></div>
+      <!-- 遍历材料列表 -->
+      {{each weekItem[2] material}}
+      <div class="material">
+        <img class="item-icon star{{material.level}}"/>
+        {{set iconPath = pluResPath + `../../miao-plugin/resources/meta-gs/material/weekly/${material.name}.webp` }}
+        <!--suppress CssUnknownTarget -->
+        <div class="label-icon {{type}}" style="background-image: url({{iconPath}})"></div>
+
+        <span class="label-name">{{material.name}}</span>
+        <div class="num">{{material.num}}</div>
+      </div>
+      {{/each}}
+    </div>
+    {{/each}}
+  </div>
+</div>
+{{/block}}
