@@ -37,7 +37,7 @@ export class materialPack extends plugin {
         },
         //崩铁和绝区零只支持全部查询（种类太少没必要）
         {
-          reg: "^#?(原神)?(星铁|崩铁)?(绝区零)?(培养|矿物|木材|其他|道具|天赋|武器|特产|boss|角色突破|全部)?(材料|素材)背包$",
+          reg: "^#?(原神)?(星铁|崩铁)?(绝区零)?(培养|矿物|木材|其他|道具|天赋|武器|特产|[Bb][Oo][Ss][Ss]|角色突破|全部)?(材料|素材)背包$",
           fnc: "materials",
         },
       ],
@@ -51,7 +51,8 @@ export class materialPack extends plugin {
   async materials() {
     let msg = this.e.msg
       .replace(/^#/, "")
-      .replace(/(星铁|崩铁|绝区零|zzz)/gi, "");
+      .replace(/(星铁|崩铁|绝区零|zzz)/gi, "")
+      .toLowerCase();
 
     this.e.isZzz =
       this.e.msg.includes("绝区零") ||
