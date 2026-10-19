@@ -3,13 +3,15 @@ body {
   transform: scale(2);
 }
 
+/* 宽度 560：边框花纹内侧约在 28px / 528px，内容居中落在花纹框内 */
 .container {
-  width: 520px !important;
+  width: 560px !important;
+  padding: 35px 30px 40px !important;
 }
 
-/* 容器宽 520，边框宽度按 520 × 50 / 800 */
+/* 边框宽度按 560 × 50 / 800 */
 .data_box_repeat {
-  --frame: 32px;
+  --frame: 35px;
 }
 
 /*.head_box {*/

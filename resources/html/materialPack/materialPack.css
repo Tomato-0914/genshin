@@ -1,9 +1,11 @@
+/* 宽度 940：边框花纹内侧约在 47px / 887px，左右各留 52px 内边距，
+ * 9 列格子（810px）正好居中落在花纹框内，上下内边距同样避开花纹 */
 body {
-  width: 850px
+  width: 940px
 }
 
 .container {
-  padding-bottom: 25px;
+  padding: 45px 52px 50px;
   position: relative;
   width: 100%;
   display: flex;
@@ -60,18 +62,23 @@ body {
   background-size: contain
 }
 
-/* 背景：bg-frame.webp 由背景原图的四角、整数个花纹周期的边框和无缝纹理拼成，
- * 用 border-image 平铺（不拉伸），图片多长都不会变形
- * --frame 为边框宽度，按 容器宽度 × 50 / 800（原图宽 800，边框切片 50） */
+/* 背景分两层，图片多长都不会拉伸：
+ * bg-paper.webp：纸面纹理，无缝平铺
+ * bg-frame.webp：只含花纹的透明边框，用 border-image 平铺
+ * （分层是为了避免 border-image 切片在缩放时出现的发丝缝透出底色）
+ * --frame 为边框宽度，按 容器宽度 × 50 / 800（原图宽 800，边框切片 50），940 × 50 / 800 ≈ 59 */
 .data_box_repeat {
-  --frame: 53px;
+  --frame: 59px;
   width: 100%;
   height: 100%;
   position: absolute;
   top: 0;
   left: 0;
   border: var(--frame) solid transparent;
-  border-image: url('../../img/other/bg-frame.webp') 50 fill round;
+  border-image: url('../../img/other/bg-frame.webp') 50 round;
+  background: url('../../img/other/bg-paper.webp') 0 0 / calc(var(--frame) * 8.2) repeat;
+  background-clip: border-box;
+  background-origin: border-box;
   font-family: tttgbnumber;
   z-index: 0
 }
